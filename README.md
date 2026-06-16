@@ -10,9 +10,7 @@ If you've been burned by a radical Hacker News redesign before, this is the oppo
 
 ## Demo
 
-[![Clearer HN — a quick tour](clearer_hn_demo_poster.png)](https://github.com/akestur/clearer-hn/blob/main/clearer_hn_show_cropped.mp4)
-
-▶ **[Watch the demo](https://github.com/akestur/clearer-hn/blob/main/clearer_hn_show_cropped.mp4)** — the cleaner feed, comment tools, dark mode, and 20-per-page paging.
+https://github.com/user-attachments/assets/d7d1fdb5-378e-4fb8-8a77-027233f1da34
 
 ## What it does
 
