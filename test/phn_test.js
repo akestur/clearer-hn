@@ -67,7 +67,7 @@ allPass &= run("List page (/news)", "https://news.ycombinator.com/news", listHTM
   { name: "data-phn enabled on <html>", fn: d => d.documentElement.getAttribute("data-phn") === "on" },
   { name: "style is clearer (single shipped style)", fn: d => d.documentElement.getAttribute("data-phn-style") === "clearer" },
   { name: "Single-row header built", fn: d => !!d.querySelector(".phn-ahead .phn-nav") },
-  { name: "nav has active Top tab", fn: d => { const t=[...d.querySelectorAll(".phn-nav a")].find(a=>a.textContent==="Top"); return t && t.classList.contains("phn-on"); } },
+  { name: "nav has active top tab", fn: d => { const t=[...d.querySelectorAll(".phn-nav a")].find(a=>a.textContent==="top"); return t && t.classList.contains("phn-on"); } },
   { name: "original pipe nav hidden", fn: d => d.querySelector(".pagetop").classList.contains("phn-hidden") },
   { name: "theme toggle moved into header", fn: d => !!d.querySelector(".phn-ahead-user .phn-toggle") },
   { name: "pipes tidied to middots", fn: d => { const t=d.querySelector(".subline").textContent; return t.indexOf("|") === -1 && t.indexOf("·") !== -1; } },

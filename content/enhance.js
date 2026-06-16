@@ -517,7 +517,7 @@
     // quiet inline nav from the existing section links
     var nav = el("div", "phn-nav");
     var curPath = location.pathname.replace(/^\//, "").split("?")[0] || "news";
-    var topChip = el("a", null, "Top"); // synthetic front-page tab (HN's /news link is the wordmark)
+    var topChip = el("a", null, "top"); // synthetic front-page tab (HN's /news link is the wordmark)
     topChip.href = "/news";
     if (curPath === "news") topChip.classList.add("phn-on");
     nav.appendChild(topChip);
