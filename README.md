@@ -8,6 +8,12 @@ If you've been burned by a radical Hacker News redesign before, this is the oppo
 
 > **Not affiliated with Y Combinator or Hacker News.** "Hacker News" is a trademark of Y Combinator. Clearer HN is an independent, unofficial extension that restyles the site in your browser.
 
+## Demo
+
+[![Clearer HN — a quick tour](clearer_hn_demo_poster.png)](https://github.com/akestur/clearer-hn/blob/main/clearer_hn_show_cropped.mp4)
+
+▶ **[Watch the demo](https://github.com/akestur/clearer-hn/blob/main/clearer_hn_show_cropped.mp4)** — the cleaner feed, comment tools, dark mode, and 20-per-page paging.
+
 ## What it does
 
 - **A more legible feed.** Quiet metadata, clearer separators, and a little more spacing between rows. That extra breathing room means you'll see a few fewer stories per screen than default HN — a deliberate trade for easier reading, not a compaction.

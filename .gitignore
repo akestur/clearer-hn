@@ -13,6 +13,11 @@ content/apple.css
 # Sandbox scratch file (could not be deleted from the build environment)
 _writetest.txt
 
+# Large demo source files — only the cropped mp4 + poster are committed
+clearer_hn_show.mp4
+clearer_hn_show.gif
+clearer_hn_show_cropped.gif
+
 # OS / editor cruft
 .DS_Store
 Thumbs.db
