@@ -1,0 +1,234 @@
+/* ============================================================
+   Clearer HN — theme.css  (GLOBAL BASE — applies in every style)
+   Holds: design tokens, the functional components Clearer HN
+   injects (toolbar, tags, inbox, submit hints, read/new tracking,
+   depth rails), invisible tap-target fixes, and a dark-mode skin
+   that works in light and dark.
+   It deliberately does NOT change HN's native light-mode look —
+   that is what the "Refined" default is about. Visual restyles
+   live in clean.css / style.css.
+   All rules gated on html[data-phn="on"] so disabling restores HN.
+   ============================================================ */
+
+/* ---------- Design tokens ---------- */
+html[data-phn="on"][data-phn-theme="light"] {
+  --phn-bg:        #f5f5f3;
+  --phn-surface:   #ffffff;
+  --phn-surface-2: #faf9f7;
+  --phn-border:    rgba(0,0,0,0.10);
+  --phn-border-2:  rgba(0,0,0,0.16);
+  --phn-text:      #1b1b1a;
+  --phn-text-2:    #5c5c57;
+  --phn-text-3:    #8a8a83;
+  --phn-accent:    #ff6600;
+  --phn-accent-weak:#fff1e8;
+  --phn-link:      #1769c4;
+  --phn-link-visited:#7a6aa8;
+  --phn-op-bg:     #fff6ee;
+  --phn-op-border: #ff8a3d;
+  --phn-new:       #1769c4;
+  --phn-new-bg:    #e7f1fb;
+  --phn-shadow:    0 1px 2px rgba(0,0,0,0.04);
+  --phn-mat:       rgba(255,255,255,0.72);
+}
+
+html[data-phn="on"][data-phn-theme="dark"] {
+  --phn-bg:        #15171a;
+  --phn-surface:   #1d2024;
+  --phn-surface-2: #22262b;
+  --phn-border:    rgba(255,255,255,0.10);
+  --phn-border-2:  rgba(255,255,255,0.18);
+  --phn-text:      #e7e8ea;
+  --phn-text-2:    #a6a8ac;
+  --phn-text-3:    #75787d;
+  --phn-accent:    #ff7a1a;
+  --phn-accent-weak:#3a2616;
+  --phn-link:      #6fb2f2;
+  --phn-link-visited:#b3a3d6;
+  --phn-op-bg:     #2a2113;
+  --phn-op-border: #c4751a;
+  --phn-new:       #6fb2f2;
+  --phn-new-bg:    #1c2c3d;
+  --phn-shadow:    0 1px 2px rgba(0,0,0,0.30);
+  --phn-mat:       rgba(21,23,26,0.72);
+}
+
+/* ============================================================
+   DARK SKIN — applies in EVERY style, so dark mode works even in
+   the otherwise-native "Refined" default. Colors only; no cards,
+   no layout changes, so HN's structure/density is preserved.
+   ============================================================ */
+html[data-phn="on"][data-phn-theme="dark"] body { background: var(--phn-bg) !important; color: var(--phn-text) !important; }
+html[data-phn="on"][data-phn-theme="dark"] #hnmain { background: var(--phn-surface) !important; }
+html[data-phn="on"][data-phn-theme="dark"] #hnmain td[bgcolor],
+html[data-phn="on"][data-phn-theme="dark"] #hnmain table[bgcolor] { background-color: transparent !important; }
+html[data-phn="on"][data-phn-theme="dark"] .title a,
+html[data-phn="on"][data-phn-theme="dark"] .titleline > a,
+html[data-phn="on"][data-phn-theme="dark"] .comment,
+html[data-phn="on"][data-phn-theme="dark"] .commtext,
+html[data-phn="on"][data-phn-theme="dark"] .commtext.c00,
+html[data-phn="on"][data-phn-theme="dark"] .default,
+html[data-phn="on"][data-phn-theme="dark"] .toptext,
+html[data-phn="on"][data-phn-theme="dark"] p { color: var(--phn-text) !important; }
+html[data-phn="on"][data-phn-theme="dark"] .commtext a,
+html[data-phn="on"][data-phn-theme="dark"] .toptext a { color: var(--phn-link) !important; }
+html[data-phn="on"][data-phn-theme="dark"] .subtext,
+html[data-phn="on"][data-phn-theme="dark"] .subline,
+html[data-phn="on"][data-phn-theme="dark"] .comhead,
+html[data-phn="on"][data-phn-theme="dark"] .comhead a,
+html[data-phn="on"][data-phn-theme="dark"] .sitebit,
+html[data-phn="on"][data-phn-theme="dark"] .sitestr,
+html[data-phn="on"][data-phn-theme="dark"] .rank,
+html[data-phn="on"][data-phn-theme="dark"] .yclinks,
+html[data-phn="on"][data-phn-theme="dark"] .yclinks a,
+html[data-phn="on"][data-phn-theme="dark"] .pagetop,
+html[data-phn="on"][data-phn-theme="dark"] td { color: var(--phn-text-2) !important; }
+html[data-phn="on"][data-phn-theme="dark"] .subtext a,
+html[data-phn="on"][data-phn-theme="dark"] .subline a,
+html[data-phn="on"][data-phn-theme="dark"] .hnuser { color: var(--phn-text-2) !important; }
+html[data-phn="on"][data-phn-theme="dark"] textarea,
+html[data-phn="on"][data-phn-theme="dark"] input[type="text"],
+html[data-phn="on"][data-phn-theme="dark"] input[type="url"],
+html[data-phn="on"][data-phn-theme="dark"] input[type="password"],
+html[data-phn="on"][data-phn-theme="dark"] input[name="q"] {
+  background: var(--phn-surface-2) !important; color: var(--phn-text) !important;
+  border: 1px solid var(--phn-border-2) !important;
+}
+/* HN's grey vote arrow is invisible on dark; flip it */
+html[data-phn="on"][data-phn-theme="dark"] .votearrow { filter: invert(0.85) hue-rotate(180deg); }
+
+/* ============================================================
+   INVISIBLE FIXES — apply in every style, don't change the look
+   ============================================================ */
+/* enlarge the upvote tap target without moving the arrow */
+html[data-phn="on"] td.votelinks > center > a,
+html[data-phn="on"] td.votelinks > a {
+  display: inline-flex !important; align-items: center; justify-content: center;
+  width: 24px; height: 24px; border-radius: 6px;
+}
+html[data-phn="on"] td.votelinks > center > a:hover,
+html[data-phn="on"] td.votelinks > a:hover { background: var(--phn-accent-weak); }
+
+/* ============================================================
+   READ / NEW-COMMENT TRACKING — works in every style
+   ============================================================ */
+/* visited stories dim so the eye skips them */
+html[data-phn="on"] tr.athing.phn-read .titleline > a {
+  color: var(--phn-text-3) !important; font-weight: 400 !important;
+}
+/* "+N new comments since your last visit" badge on the feed */
+html[data-phn="on"] .phn-newcount {
+  display: inline-block; margin-left: 6px; font-size: 11px; font-weight: 600;
+  color: var(--phn-new); background: var(--phn-new-bg);
+  border: 1px solid var(--phn-new); border-radius: 5px; padding: 0 5px; line-height: 1.5;
+}
+
+/* ============================================================
+   DEPTH-AWARE THREAD RAILS — navigation aid, every style
+   (subtle in light; the modern styles brighten them)
+   ============================================================ */
+html[data-phn="on"] .default > .comment {
+  border-left: 2px solid var(--phn-border);
+  padding-left: 11px !important; margin-left: 2px;
+}
+html[data-phn="on"] tr.phn-d1 .default > .comment { border-left-color: #e3853f; }
+html[data-phn="on"] tr.phn-d2 .default > .comment { border-left-color: #4a9fe0; }
+html[data-phn="on"] tr.phn-d3 .default > .comment { border-left-color: #4fb589; }
+html[data-phn="on"] tr.phn-d4 .default > .comment { border-left-color: #b292e6; }
+html[data-phn="on"] tr.phn-d5 .default > .comment { border-left-color: #dca34a; }
+html[data-phn="on"] tr.phn-d6 .default > .comment { border-left-color: #9aa0a6; }
+/* OP + new-since-visit win over depth color */
+html[data-phn="on"] tr.comtr.phn-op .default > .comment {
+  border-left-color: var(--phn-op-border) !important;
+  background: var(--phn-op-bg); border-radius: 0 8px 8px 0; padding: 6px 11px !important;
+}
+html[data-phn="on"] tr.comtr.phn-fresh .default > .comment { border-left-color: var(--phn-new) !important; }
+
+/* OP tag + "new" dot (injected) */
+html[data-phn="on"] .phn-op-tag {
+  display: inline-block; margin-left: 6px; font-size: 10px; font-weight: 700;
+  letter-spacing: .3px; text-transform: uppercase;
+  color: var(--phn-op-border); background: var(--phn-op-bg);
+  border: 1px solid var(--phn-op-border); border-radius: 5px; padding: 0 5px;
+}
+html[data-phn="on"] .phn-new-dot {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--phn-new); margin-right: 6px; vertical-align: 1px;
+}
+
+/* ============================================================
+   CLEARER HN COMMENT TOOLBAR (injected) — every style
+   ============================================================ */
+html[data-phn="on"] .phn-bar {
+  display: flex; flex-wrap: wrap; gap: 8px; align-items: center;
+  margin: 10px 0 4px; padding: 8px 12px;
+  background: var(--phn-surface-2); border: 1px solid var(--phn-border);
+  border-radius: 10px; font-size: 12px; color: var(--phn-text-2);
+}
+html[data-phn="on"] .phn-bar button {
+  background: var(--phn-surface); color: var(--phn-text) !important;
+  border: 1px solid var(--phn-border-2); border-radius: 7px;
+  padding: 4px 10px; font-size: 12px; font-weight: 500; cursor: pointer;
+}
+html[data-phn="on"] .phn-bar button:hover { border-color: var(--phn-accent); }
+html[data-phn="on"] .phn-bar .phn-bar-sep { flex: 1; }
+html[data-phn="on"] .phn-bar kbd {
+  background: var(--phn-surface); border: 1px solid var(--phn-border-2);
+  border-bottom-width: 2px; border-radius: 4px; padding: 0 5px; font-size: 11px;
+  font-family: ui-monospace, Menlo, monospace; color: var(--phn-text-2);
+}
+html[data-phn="on"] .phn-kbd-focus > td { box-shadow: inset 3px 0 0 var(--phn-accent); }
+/* pinned (sticky-on-scroll) comment toolbar — see makeStickyBar() */
+html[data-phn="on"] .phn-bar-holder { width: 100%; }
+html[data-phn="on"] .phn-bar.phn-bar-stuck {
+  background: var(--phn-mat) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12) !important;
+}
+
+/* ============================================================
+   ACTIVITY INBOX (threads page) — every style
+   ============================================================ */
+html[data-phn="on"] .phn-inbox-bar {
+  display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 12px 0; padding: 4px 0;
+}
+html[data-phn="on"] .phn-inbox-bar .phn-pill {
+  border: 1px solid var(--phn-border-2); background: var(--phn-surface);
+  color: var(--phn-text-2); border-radius: 999px; padding: 4px 12px;
+  font-size: 12px; font-weight: 500; cursor: pointer; user-select: none;
+}
+html[data-phn="on"] .phn-inbox-bar .phn-pill.phn-on {
+  background: var(--phn-new-bg); color: var(--phn-new); border-color: var(--phn-new);
+}
+html[data-phn="on"] tr.comtr.phn-reply-hidden { display: none !important; }
+html[data-phn="on"] tr.comtr.phn-mine .default > .comment { opacity: .85; }
+html[data-phn="on"] .phn-reply-tag {
+  display: inline-block; margin-left: 6px; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: .3px;
+  color: var(--phn-new); background: var(--phn-new-bg);
+  border: 1px solid var(--phn-new); border-radius: 5px; padding: 0 5px;
+}
+
+/* ============================================================
+   SUBMIT-PAGE HINTS (injected) — every style
+   ============================================================ */
+html[data-phn="on"] .phn-hint {
+  font-size: 12px; margin: 4px 0 2px; color: var(--phn-text-3);
+  display: flex; align-items: center; gap: 6px;
+}
+html[data-phn="on"] .phn-hint.phn-ok  { color: #1f9d57; }
+html[data-phn="on"] .phn-hint.phn-warn { color: #c0791a; }
+html[data-phn="on"][data-phn-theme="dark"] .phn-hint.phn-ok  { color: #57c98a; }
+html[data-phn="on"][data-phn-theme="dark"] .phn-hint.phn-warn { color: #e0a64c; }
+
+/* theme toggle button in the top bar (injected) */
+html[data-phn="on"] .phn-toggle {
+  cursor: pointer; border: 1px solid rgba(0,0,0,.28); background: rgba(255,255,255,.22);
+  color: #000; border-radius: 8px; padding: 2px 9px; font-size: 12px; font-weight: 500;
+  margin-left: 8px; line-height: 1.6; display: inline-flex; align-items: center; gap: 5px;
+}
+html[data-phn="on"] .phn-toggle:hover { background: rgba(255,255,255,.4); }
+html[data-phn="on"][data-phn-theme="dark"] .phn-toggle {
+  border-color: rgba(255,255,255,.25); background: rgba(255,255,255,.10); color: var(--phn-text);
+}

@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Clearer HN",
+  "version": "1.0.0",
+  "description": "Small, safe visual refinements that make Hacker News easier to read — clearer type and spacing, a compact feed, light/dark mode, and optional comment tools. Nothing moves; voting, login, and replies work exactly as before.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "Clearer HN",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "permissions": ["storage"],
+  "content_scripts": [
+    {
+      "matches": ["*://news.ycombinator.com/*"],
+      "css": ["content/theme.css", "content/clean.css", "content/style.css"],
+      "js": ["content/enhance.js"],
+      "run_at": "document_start"
+    }
+  ]
+}

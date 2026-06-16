@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build artifacts
+dist/
+*.zip
+
+# Superseded source files (not loaded by the manifest; delete locally with `git rm`)
+content/refined.css
+content/apple.css
+
+# Sandbox scratch file (could not be deleted from the build environment)
+_writetest.txt
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/

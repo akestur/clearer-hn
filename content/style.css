@@ -1,0 +1,158 @@
+/* ============================================================
+   Clearer HN — style.css  (the single shipped style)
+   A restyle that keeps HN's interaction model 1:1 but
+   rebuilds only the visual system: cleaner type, system grays, a slim
+   translucent header, and a COMPACT, Mail-inbox-style dense feed
+   (tighter than vanilla HN — more stories per screen, less noise).
+   Layers on clean.css; gated on [data-phn-style="clearer"].
+   ============================================================ */
+
+html[data-phn="on"][data-phn-style="clearer"] body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif !important;
+  letter-spacing: -0.01em;
+}
+html[data-phn="on"][data-phn-style="clearer"] #hnmain {
+  border-radius: 16px !important; border-color: var(--phn-border) !important;
+}
+
+/* ---------- Slim translucent single-row header (deference) ---------- */
+html[data-phn="on"][data-phn-style="clearer"] #hnmain > tbody > tr:first-child > td {
+  background: var(--phn-mat) !important;
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+  position: -webkit-sticky; position: sticky; top: 0; z-index: 50;
+  border-bottom: 0.5px solid var(--phn-border) !important;
+  padding: 8px 16px !important;
+}
+html[data-phn="on"][data-phn-style="clearer"] #hnmain > tbody > tr:first-child img[src*="y18"] {
+  width: 17px !important; height: 17px !important; border-radius: 5px !important;
+}
+html[data-phn="on"][data-phn-style="clearer"] .pagetop.phn-hidden { display: none !important; }
+
+html[data-phn="on"][data-phn-style="clearer"] .phn-ahead {
+  display: flex; align-items: center; gap: 14px;
+}
+html[data-phn="on"][data-phn-style="clearer"] .phn-wordmark a,
+html[data-phn="on"][data-phn-style="clearer"] .phn-wordmark {
+  font-size: 16px; font-weight: 600; letter-spacing: -0.02em;
+  color: var(--phn-text) !important; text-decoration: none; white-space: nowrap;
+}
+html[data-phn="on"][data-phn-style="clearer"] .phn-nav {
+  display: flex; gap: 13px; align-items: center; overflow-x: auto; scrollbar-width: none;
+}
+html[data-phn="on"][data-phn-style="clearer"] .phn-nav::-webkit-scrollbar { display: none; }
+html[data-phn="on"][data-phn-style="clearer"] .phn-nav a {
+  font-size: 13px; color: var(--phn-text-2) !important; white-space: nowrap;
+  text-decoration: none !important;
+}
+html[data-phn="on"][data-phn-style="clearer"] .phn-nav a:hover { color: var(--phn-text) !important; }
+html[data-phn="on"][data-phn-style="clearer"] .phn-nav a.phn-on { color: var(--phn-text) !important; font-weight: 600; }
+html[data-phn="on"][data-phn-style="clearer"] .phn-ahead-user,
+html[data-phn="on"][data-phn-style="clearer"] .phn-ahead-user a {
+  margin-left: auto; font-size: 13px; color: var(--phn-text-2) !important; white-space: nowrap;
+}
+html[data-phn="on"][data-phn-style="clearer"] .phn-ahead-user a { margin-left: 0; }
+
+/* ---------- Compact, Mail-style dense feed ---------- */
+html[data-phn="on"][data-phn-style="clearer"] table.itemlist {
+  background: var(--phn-surface) !important;
+  border: 0.5px solid var(--phn-border) !important;
+  border-radius: 14px !important;
+  box-shadow: var(--phn-shadow) !important;
+  margin: 14px 16px !important; overflow: hidden;
+}
+/* drop the blank spacer rows — reclaim vertical space */
+html[data-phn="on"][data-phn-style="clearer"] tr.spacer { display: none !important; height: 0 !important; }
+/* tight rows + a hairline under each story's metadata line */
+html[data-phn="on"][data-phn-style="clearer"] tr.athing > td { padding-top: 6px !important; }
+html[data-phn="on"][data-phn-style="clearer"] td.subtext {
+  padding-bottom: 6px !important;
+  box-shadow: inset 0 -0.5px 0 var(--phn-border);
+}
+/* title: one tight line, domain trailing inline (HN already inlines it) */
+html[data-phn="on"][data-phn-style="clearer"] .titleline > a {
+  font-size: 14px !important; font-weight: 500 !important; line-height: 1.35 !important;
+  letter-spacing: -0.011em !important;
+}
+html[data-phn="on"][data-phn-style="clearer"] .sitebit,
+html[data-phn="on"][data-phn-style="clearer"] .sitestr { font-size: 12px !important; color: var(--phn-text-3) !important; }
+/* metadata: quiet single sub-line */
+html[data-phn="on"][data-phn-style="clearer"] .subtext,
+html[data-phn="on"][data-phn-style="clearer"] .subline { font-size: 12px !important; color: var(--phn-text-3) !important; }
+html[data-phn="on"][data-phn-style="clearer"] .subline .score { color: var(--phn-text-2) !important; font-weight: 500 !important; }
+html[data-phn="on"][data-phn-style="clearer"] .subline .hnuser { color: var(--phn-text-2) !important; }
+/* the comments link is the key secondary destination — make it the accent */
+html[data-phn="on"][data-phn-style="clearer"] .subline a[href^="item?id="]:last-child {
+  color: var(--phn-link) !important; font-weight: 500;
+}
+/* secondary actions (hide/flag/favorite/past) stay visible but quiet */
+html[data-phn="on"][data-phn-style="clearer"] .subline a[href^="hide?"],
+html[data-phn="on"][data-phn-style="clearer"] .subline a[href^="fave?"],
+html[data-phn="on"][data-phn-style="clearer"] .subline a[href*="flag"] { color: var(--phn-text-3) !important; }
+html[data-phn="on"][data-phn-style="clearer"] .rank { color: var(--phn-text-3) !important; font-size: 12px !important; }
+
+/* leading "new activity since last visit" dot (Mail-style, injected) */
+html[data-phn="on"][data-phn-style="clearer"] .phn-activity-dot {
+  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--phn-new); margin-right: 7px; vertical-align: 1px;
+}
+
+/* ---------- Vote control: clearer triangle ---------- */
+html[data-phn="on"][data-phn-style="clearer"] td.votelinks > center > a,
+html[data-phn="on"][data-phn-style="clearer"] td.votelinks > a {
+  width: 26px; height: 26px; border-radius: 7px;
+}
+/* HN's vote arrow, redrawn as a PURE CSS border-triangle.
+   No image or mask to load, so it can never render blank — an earlier
+   SVG mask and an SVG data-URI both painted nothing on the shipped
+   build (the data-URI failed to load). A border-triangle always paints. */
+html[data-phn="on"][data-phn-style="clearer"] .votearrow {
+  width: 0 !important; height: 0 !important;
+  background: none !important;
+  border-left: 6px solid transparent !important;
+  border-right: 6px solid transparent !important;
+  border-bottom: 8px solid var(--phn-text-3) !important;
+  border-top: 0 !important; border-radius: 0 !important;
+  -webkit-mask: none !important; mask: none !important; filter: none !important;
+}
+html[data-phn="on"][data-phn-style="clearer"][data-phn-theme="dark"] .votearrow {
+  border-bottom-color: var(--phn-text-2) !important;
+}
+html[data-phn="on"][data-phn-style="clearer"] td.votelinks a:hover .votearrow {
+  border-bottom-color: var(--phn-accent) !important;
+}
+
+/* ---------- More link, quieter ---------- */
+html[data-phn="on"][data-phn-style="clearer"] a.morelink {
+  margin: 12px 16px !important; padding: 7px 16px !important; border-radius: 9px; font-size: 13px;
+}
+
+/* ---------- Comments: reduced indent + depth rails + reply pills ---------- */
+html[data-phn="on"][data-phn-style="clearer"] .default > .comment {
+  border-left-width: 2px !important; padding-left: 13px !important; border-radius: 0 8px 8px 0;
+}
+html[data-phn="on"][data-phn-style="clearer"] .comhead,
+html[data-phn="on"][data-phn-style="clearer"] .comhead a { font-size: 12.5px !important; }
+html[data-phn="on"][data-phn-style="clearer"] .commtext { font-size: 14.5px !important; line-height: 1.62 !important; }
+html[data-phn="on"][data-phn-style="clearer"] .reply a {
+  display: inline-block; font-size: 12px !important; font-weight: 500;
+  color: var(--phn-link) !important; text-decoration: none !important;
+  border: 0.5px solid var(--phn-border-2); padding: 3px 11px; border-radius: 8px; margin-top: 4px;
+}
+html[data-phn="on"][data-phn-style="clearer"] .reply a:hover { border-color: var(--phn-accent); }
+
+/* ---------- Rounded controls ---------- */
+html[data-phn="on"][data-phn-style="clearer"] input[type="submit"] { border-radius: 10px !important; }
+html[data-phn="on"][data-phn-style="clearer"] textarea,
+html[data-phn="on"][data-phn-style="clearer"] input[type="text"],
+html[data-phn="on"][data-phn-style="clearer"] input[type="url"] { border-radius: 10px !important; }
+html[data-phn="on"][data-phn-style="clearer"] .phn-bar { border-radius: 12px; }
+html[data-phn="on"][data-phn-style="clearer"] .phn-bar button { border-radius: 8px; }
+
+/* ---------- Respect reduced transparency / motion ---------- */
+@media (prefers-reduced-transparency: reduce) {
+  html[data-phn="on"][data-phn-style="clearer"] #hnmain > tbody > tr:first-child > td {
+    background: var(--phn-surface) !important; -webkit-backdrop-filter: none; backdrop-filter: none;
+  }
+}
