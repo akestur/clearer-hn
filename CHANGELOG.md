@@ -9,7 +9,7 @@ First public release.
 
 ### Added
 - A restyle of Hacker News that keeps the site's interaction model unchanged (same ranked list, upvote position, links, scores, and pagination) and changes only the visual presentation.
-- A cleaner, more compact feed: tighter rows, quiet metadata, clear separators, and a clean upvote triangle — fits more stories per screen than vanilla HN.
+- A more legible feed: quiet metadata, clearer separators, a clean upvote triangle, and a little more spacing between rows (trading a touch of density for easier reading).
 - Higher-contrast metadata text and more comfortable comment line spacing.
 - A slim, single-row header with a quiet section nav.
 - Comment tools: collapse-all / expand-all / next-new, an **OP** tag, new-since-last-visit markers, depth guides on nested replies, and `j` / `k` / `z` keyboard navigation.

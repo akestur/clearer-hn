@@ -2,8 +2,8 @@
    Clearer HN — style.css  (the single shipped style)
    A restyle that keeps HN's interaction model 1:1 but
    rebuilds only the visual system: cleaner type, system grays, a slim
-   translucent header, and a COMPACT, Mail-inbox-style dense feed
-   (tighter than vanilla HN — more stories per screen, less noise).
+   translucent header, and a more legible feed with a little more row
+   spacing than vanilla HN (a deliberate trade for readability).
    Layers on clean.css; gated on [data-phn-style="clearer"].
    ============================================================ */
 
@@ -54,7 +54,7 @@ html[data-phn="on"][data-phn-style="clearer"] .phn-ahead-user a {
 }
 html[data-phn="on"][data-phn-style="clearer"] .phn-ahead-user a { margin-left: 0; }
 
-/* ---------- Compact, Mail-style dense feed ---------- */
+/* ---------- More legible feed ---------- */
 html[data-phn="on"][data-phn-style="clearer"] table.itemlist {
   background: var(--phn-surface) !important;
   border: 0.5px solid var(--phn-border) !important;
@@ -64,13 +64,15 @@ html[data-phn="on"][data-phn-style="clearer"] table.itemlist {
 }
 /* drop the blank spacer rows — reclaim vertical space */
 html[data-phn="on"][data-phn-style="clearer"] tr.spacer { display: none !important; height: 0 !important; }
-/* tight rows + a hairline under each story's metadata line */
+/* A hairline under each story's metadata line. Rows carry a little
+   more vertical breathing room than vanilla HN — a deliberate trade
+   of some density for easier reading. */
 html[data-phn="on"][data-phn-style="clearer"] tr.athing > td { padding-top: 6px !important; }
 html[data-phn="on"][data-phn-style="clearer"] td.subtext {
   padding-bottom: 6px !important;
   box-shadow: inset 0 -0.5px 0 var(--phn-border);
 }
-/* title: one tight line, domain trailing inline (HN already inlines it) */
+/* title: one line, domain trailing inline (HN already inlines it) */
 html[data-phn="on"][data-phn-style="clearer"] .titleline > a {
   font-size: 14px !important; font-weight: 500 !important; line-height: 1.35 !important;
   letter-spacing: -0.011em !important;
@@ -98,7 +100,8 @@ html[data-phn="on"][data-phn-style="clearer"] .phn-activity-dot {
   background: var(--phn-new); margin-right: 7px; vertical-align: 1px;
 }
 
-/* ---------- Vote control: clearer triangle ---------- */
+/* ---------- Vote control: clearer triangle ----------
+   A larger, easier tap target than HN's tiny default arrow. */
 html[data-phn="on"][data-phn-style="clearer"] td.votelinks > center > a,
 html[data-phn="on"][data-phn-style="clearer"] td.votelinks > a {
   width: 26px; height: 26px; border-radius: 7px;

@@ -10,7 +10,7 @@ If you've been burned by a radical Hacker News redesign before, this is the oppo
 
 ## What it does
 
-- **A cleaner, more compact feed.** Tighter rows with quiet metadata and clear separators, so *more* stories fit per screen than on default HN — while looking calmer and more legible.
+- **A more legible feed.** Quiet metadata, clearer separators, and a little more spacing between rows. That extra breathing room means you'll see a few fewer stories per screen than default HN — a deliberate trade for easier reading, not a compaction.
 - **Better readability.** Higher-contrast metadata text and comfortable line spacing in the comment view, without sacrificing HN's density on the feed.
 - **A slim, tidy header** in place of HN's pipe-delimited bar, with the same links.
 - **Comment tools (opt-in):** collapse-all / expand-all / jump-to-next-new, an **OP** tag, markers for comments posted since your last visit, subtle depth guides on nested replies, and `j` / `k` / `z` keyboard navigation. The toolbar stays in view while you scroll a thread.
