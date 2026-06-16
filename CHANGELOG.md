@@ -10,6 +10,7 @@ First public release.
 ### Added
 - A restyle of Hacker News that keeps the site's interaction model unchanged (same ranked list, upvote position, links, scores, and pagination) and changes only the visual presentation.
 - A more legible feed: quiet metadata, clearer separators, a clean upvote triangle, and a little more spacing between rows (trading a touch of density for easier reading).
+- 20 items per list page (instead of HN's 30) so a page stays about as tall as default HN. Prev/Next paging updates the URL (`?cp=N`) so Back/Forward and bookmarks work; it fetches HN's own pages behind the scenes, so nothing is skipped. Toggleable in the popup.
 - Higher-contrast metadata text and more comfortable comment line spacing.
 - A slim, single-row header with a quiet section nav.
 - Comment tools: collapse-all / expand-all / next-new, an **OP** tag, new-since-last-visit markers, depth guides on nested replies, and `j` / `k` / `z` keyboard navigation.

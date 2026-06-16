@@ -132,8 +132,9 @@ allPass &= run("Feed read/new tracking", "https://news.ycombinator.com/news", fe
   { name: "visited story dimmed (phn-read)", fn: d => d.getElementById("900").classList.contains("phn-read") },
   { name: "unseen story not dimmed", fn: d => !d.getElementById("901").classList.contains("phn-read") },
   { name: "+N new badge shows +8 (40-32)", fn: d => { const b = d.querySelector(".phn-newcount"); return b && b.textContent === "+8"; } },
-  { name: "new-activity dot on changed story", fn: d => !!d.getElementById("900").querySelector(".titleline .phn-activity-dot") },
-  { name: "no dot / badge on unseen story", fn: d => { const r=d.getElementById("901"); return !r.querySelector(".phn-activity-dot") && r.nextElementSibling.querySelector(".phn-newcount") === null; } },
+  { name: "+N badge has an explanatory tooltip", fn: d => { const b = d.querySelector(".phn-newcount"); return b && /new comments? since your last visit/.test(b.title); } },
+  { name: "no leading dot is added (consolidated to badge)", fn: d => d.querySelector(".phn-activity-dot") === null },
+  { name: "no badge on unseen story", fn: d => d.getElementById("901").nextElementSibling.querySelector(".phn-newcount") === null },
 ]);
 
 /* Fixture 2c: collapse / expand-all detection (HN collapsed toggle = "[N more]") */
@@ -172,6 +173,34 @@ allPass &= run("Collapse all targets expanded roots", "https://news.ycombinator.
       const cb = [...d.querySelectorAll(".phn-bar button")].find(b => /collapse/i.test(b.textContent));
       cb.click();
       return c701 === 1 && c702 === 0; } },
+]);
+
+/* Fixture 2d: 20-per-page (no-network path: last page with 25 items) */
+function storyUnit(id, rank) {
+  return `<tr class="athing submission" id="${id}"><td class="title"><span class="rank">${rank}.</span></td>
+  <td class="votelinks"><center><a href="vote?id=${id}"><div class="votearrow"></div></a></center></td>
+  <td class="title"><span class="titleline"><a href="https://ex.com/${id}">Story ${rank}</a></span></td></tr>
+  <tr><td colspan="2"></td><td class="subtext"><span class="subline"><span class="score">10 points</span> by <a class="hnuser">u</a> <a href="item?id=${id}">3 comments</a></span></td></tr>
+  <tr class="spacer"></tr>`;
+}
+let units25 = ""; for (let i = 0; i < 25; i++) units25 += storyUnit(1000 + i, i + 1);
+const pageHTML = `<!DOCTYPE html><html><body><center><table id="hnmain"><tbody>
+<tr><td bgcolor="#ff6600"><span class="pagetop"><b class="hnname"><a href="news">Hacker News</a></b> <a href="login">login</a></span></td></tr>
+<tr><td><table><tbody>${units25}</tbody></table></td></tr></tbody></table></center></body></html>`;
+function visibleStories(d) { return [...d.querySelectorAll("tr.athing")].filter(r => r.querySelector(".titleline") && r.style.display !== "none").length; }
+function click(d, el) { el.dispatchEvent(new d.defaultView.MouseEvent("click", { bubbles: true, cancelable: true })); }
+allPass &= run("20-per-page real pagination", "https://news.ycombinator.com/news", pageHTML, {}, false, [
+  { name: "window 1 shows 20 of 25", fn: d => visibleStories(d) === 20 },
+  { name: "pager: prev hidden, next shown, page 1 (space reserved)", fn: d => {
+      const prev = d.querySelector(".phn-prev"), next = d.querySelector(".phn-next"), num = d.querySelector(".phn-pagenum");
+      return prev.style.visibility === "hidden" && next.style.visibility === "visible" && num.textContent === "page 1"; } },
+  { name: "Next → window 2 shows last 5, next hides (space reserved)", fn: d => {
+      click(d, d.querySelector(".phn-next"));
+      const prev = d.querySelector(".phn-prev"), next = d.querySelector(".phn-next"), num = d.querySelector(".phn-pagenum");
+      return visibleStories(d) === 5 && prev.style.visibility === "visible" && next.style.visibility === "hidden" && num.textContent === "page 2"; } },
+  { name: "Prev → back to window 1 (20)", fn: d => {
+      click(d, d.querySelector(".phn-prev"));
+      return visibleStories(d) === 20 && d.querySelector(".phn-pagenum").textContent === "page 1"; } },
 ]);
 
 /* Fixture 3: threads/inbox */

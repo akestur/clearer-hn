@@ -94,12 +94,6 @@ html[data-phn="on"][data-phn-style="clearer"] .subline a[href^="fave?"],
 html[data-phn="on"][data-phn-style="clearer"] .subline a[href*="flag"] { color: var(--phn-text-3) !important; }
 html[data-phn="on"][data-phn-style="clearer"] .rank { color: var(--phn-text-3) !important; font-size: 12px !important; }
 
-/* leading "new activity since last visit" dot (Mail-style, injected) */
-html[data-phn="on"][data-phn-style="clearer"] .phn-activity-dot {
-  display: inline-block; width: 7px; height: 7px; border-radius: 50%;
-  background: var(--phn-new); margin-right: 7px; vertical-align: 1px;
-}
-
 /* ---------- Vote control: clearer triangle ----------
    A larger, easier tap target than HN's tiny default arrow. */
 html[data-phn="on"][data-phn-style="clearer"] td.votelinks > center > a,

@@ -17,7 +17,8 @@
     comments: true,
     inbox: true,
     submit: true,
-    readState: true // dim visited stories + show "+N new comments"
+    readState: true, // dim visited stories + show "+N new comments"
+    paging: true // show 20 list items per page instead of HN's 30
   };
   var settings = Object.assign({}, DEFAULTS);
   var root = document.documentElement;
@@ -189,6 +190,7 @@
           row.classList.add("phn-op");
           if (!head.querySelector(".phn-op-tag")) {
             var tag = el("span", "phn-op-tag", "OP");
+            tag.title = "Original poster";
             userEl.insertAdjacentElement("afterend", tag);
           }
         }
@@ -199,7 +201,9 @@
           var ts = t ? Date.parse(t.split(" ")[0]) : NaN;
           if (!isNaN(ts) && ts > lastVisit && head && !head.querySelector(".phn-new-dot")) {
             row.classList.add("phn-fresh");
-            head.insertBefore(el("span", "phn-new-dot"), head.firstChild);
+            var nd = el("span", "phn-new-dot");
+            nd.title = "New since your last visit";
+            head.insertBefore(nd, head.firstChild);
           }
         }
       });
@@ -481,20 +485,150 @@
             if (!clink) return;
             var m = clink.textContent.match(/(\d+)/);
             var cur = m ? parseInt(m[1], 10) : 0;
-            if (cur > storedC) {
-              if (!clink.parentNode.querySelector(".phn-newcount")) {
-                clink.insertAdjacentElement("afterend", el("span", "phn-newcount", "+" + (cur - storedC)));
-              }
-              // Mail-style leading "new activity" dot on the title
-              var line = row.querySelector(".titleline");
-              if (line && !line.querySelector(".phn-activity-dot")) {
-                line.insertBefore(el("span", "phn-activity-dot"), line.firstChild);
-              }
+            if (cur > storedC && !clink.parentNode.querySelector(".phn-newcount")) {
+              var n = cur - storedC;
+              var badge = el("span", "phn-newcount", "+" + n);
+              badge.title = n + " new comment" + (n === 1 ? "" : "s") + " since your last visit";
+              clink.insertAdjacentElement("afterend", badge);
             }
           });
         });
       });
     } catch (e) {}
+  }
+
+  /* ---------- 20 items per page, real pagination ----------
+     HN serves 30/page; we show a 20-item window and drive Prev/Next
+     ourselves, updating the URL (?cp=N) via history so Back/Forward and
+     bookmarks behave like normal pages. HN's own pages are fetched
+     (same-origin, so the user's session + vote tokens come along) as a
+     buffer and kept in the DOM; only the current window is shown.
+     Falls back gracefully if a fetch fails. */
+  var PHN_PAGE = 20;
+  function paginate20() {
+    if (!settings.paging) return;
+    // HN's stories table has no stable class/id, so find it via the rows.
+    var firstAthing = $("tr.athing");
+    if (!firstAthing) return;
+    var table = firstAthing.closest("table");
+    if (!table) return;
+    var tbody = table.tBodies[0] || table;
+    table.style.width = "100%"; // HN's stories table is shrink-to-fit; pin it
+                                // full-width so the centered pager never drifts
+
+    function abs(h, base) { try { return new URL(h, base || location.href).href; } catch (e) { return null; } }
+    function collect(tb) {
+      var units = [], cur = null;
+      Array.prototype.forEach.call(tb.children, function (r) {
+        if (r.querySelector && r.querySelector("a.morelink")) return; // skip "More" rows
+        if (r.matches && r.matches("tr.athing") && r.querySelector(".titleline")) {
+          cur = { rows: [r] }; units.push(cur);
+        } else if (cur && !(r.matches && r.matches("tr.athing"))) {
+          cur.rows.push(r);
+        }
+      });
+      return units;
+    }
+
+    var allUnits = collect(tbody);
+    var nativeMoreA = $("a.morelink");
+    if (allUnits.length <= PHN_PAGE && !nativeMoreA) return; // a single short page; nothing to do
+    var nextServerUrl = nativeMoreA ? abs(nativeMoreA.getAttribute("href")) : null;
+    if (nativeMoreA) { var nmr = nativeMoreA.closest("tr"); if (nmr) nmr.style.display = "none"; }
+
+    // our pager (kept last in the table). A single full-width cell
+    // (colspan spans every column) so the pager centers across the whole
+    // row, not the variable-width title cell.
+    var pagerRow = document.createElement("tr"); pagerRow.className = "phn-pager-row";
+    var pcell = document.createElement("td"); pcell.colSpan = 9;
+    var pager = el("div", "phn-pager");
+    var prevA = el("a", "phn-pagebtn phn-prev", "‹ Prev"); prevA.href = "#";
+    var pnum = el("span", "phn-pagenum");
+    var nextA = el("a", "morelink phn-next", "More ›"); nextA.href = "#";
+    pager.appendChild(prevA); pager.appendChild(pnum); pager.appendChild(nextA);
+    pcell.appendChild(pager); pagerRow.appendChild(pcell);
+    tbody.appendChild(pagerRow);
+
+    var fetching = false;
+    function setHidden(u, h) { u.rows.forEach(function (tr) { tr.style.display = h ? "none" : ""; }); }
+    function curPage() { var p = parseInt((new URLSearchParams(location.search)).get("cp") || "1", 10); return p > 0 ? p : 1; }
+    function maxPage() { return Math.max(1, Math.ceil(allUnits.length / PHN_PAGE)); }
+    function hasNext(p) { return allUnits.length > p * PHN_PAGE || !!nextServerUrl; }
+
+    // fetch HN pages until we have at least `target` items buffered
+    function ensureLoaded(target, cb) {
+      if (allUnits.length >= target || !nextServerUrl || fetching) { cb(); return; }
+      fetching = true;
+      var from = nextServerUrl;
+      fetch(from, { credentials: "same-origin" })
+        .then(function (r) { return r.text(); })
+        .then(function (html) {
+          var doc = new DOMParser().parseFromString(html, "text/html");
+          var na = doc.querySelector("tr.athing");
+          var nt = na ? na.closest("table") : null;
+          var ntb = nt ? (nt.tBodies[0] || nt) : null;
+          var nMore = doc.querySelector("a.morelink");
+          nextServerUrl = nMore ? abs(nMore.getAttribute("href"), from) : null;
+          if (ntb) {
+            collect(ntb).forEach(function (u) {
+              var imp = { rows: [] };
+              u.rows.forEach(function (tr) { var n = document.importNode(tr, true); n.style.display = "none"; tbody.insertBefore(n, pagerRow); imp.rows.push(n); });
+              allUnits.push(imp);
+            });
+            safe(tidySublines); safe(enhanceFeed); // dim/tidy the new rows too
+          }
+          fetching = false;
+          if (allUnits.length < target && nextServerUrl) ensureLoaded(target, cb);
+          else cb();
+        })
+        .catch(function () { fetching = false; cb(); });
+    }
+
+    function renderPager(p) {
+      // visibility (not display) so the cluster keeps a constant width
+      // and "More" never shifts sideways when Prev/Next appear or hide
+      prevA.style.visibility = p > 1 ? "visible" : "hidden";
+      nextA.style.visibility = hasNext(p) ? "visible" : "hidden";
+      pnum.textContent = "page " + p;
+    }
+    // Keep the pager at a constant vertical spot: pin it to the tallest
+    // page seen so far (pages vary in height as titles wrap), so it stops
+    // bouncing up/down between pages.
+    var maxBodyH = 0;
+    function stabilizePager() {
+      pager.style.marginTop = "0px";
+      var h = pagerRow.getBoundingClientRect().top - table.getBoundingClientRect().top;
+      if (h > maxBodyH) maxBodyH = h;
+      pager.style.marginTop = Math.max(0, maxBodyH - h) + "px";
+    }
+    function showWindow(p) {
+      var start = (p - 1) * PHN_PAGE;
+      allUnits.forEach(function (u, i) { setHidden(u, !(i >= start && i < start + PHN_PAGE)); });
+      renderPager(p);
+      stabilizePager();
+    }
+    function goTo(p, push) {
+      if (p < 1) p = 1;
+      nextA.textContent = "Loading…";
+      ensureLoaded(p * PHN_PAGE, function () {
+        nextA.textContent = "More ›";
+        if (p > maxPage()) p = maxPage();
+        var u = new URL(location.href);
+        if (p <= 1) u.searchParams.delete("cp"); else u.searchParams.set("cp", String(p));
+        var rel = u.pathname + (u.search || "");
+        if (push) { try { history.pushState({ cp: p }, "", rel); } catch (e) {} }
+        showWindow(p);
+        try { window.scrollTo(0, 0); } catch (e) {}
+      });
+    }
+
+    prevA.addEventListener("click", function (e) { e.preventDefault(); goTo(curPage() - 1, true); });
+    nextA.addEventListener("click", function (e) { e.preventDefault(); goTo(curPage() + 1, true); });
+    window.addEventListener("popstate", function () { goTo(curPage(), false); });
+
+    try { history.replaceState({ cp: curPage() }, "", location.pathname + location.search); } catch (e) {}
+    allUnits.forEach(function (u) { setHidden(u, true); }); // hide all, then render the window
+    goTo(curPage(), false);
   }
 
   /* ---------- Rebuilt header (compact single-row nav) ---------- */
@@ -567,7 +701,7 @@
     // build the header first so the theme toggle lands inside it
     safe(buildHeader);
     safe(injectThemeToggle);
-    if (type === "list") safe(enhanceFeed);
+    if (type === "list") { safe(enhanceFeed); safe(paginate20); }
     if (type === "item") safe(enhanceComments);
     if (type === "threads") safe(enhanceInbox);
     if (type === "submit") safe(enhanceSubmit);

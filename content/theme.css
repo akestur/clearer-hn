@@ -112,9 +112,10 @@ html[data-phn="on"] td.votelinks > a:hover { background: var(--phn-accent-weak);
 /* ============================================================
    READ / NEW-COMMENT TRACKING — works in every style
    ============================================================ */
-/* visited stories dim so the eye skips them */
+/* visited stories get a gentle "seen" cue — dimmed one notch, still
+   fully legible (not grayed-out into looking disabled) */
 html[data-phn="on"] tr.athing.phn-read .titleline > a {
-  color: var(--phn-text-3) !important; font-weight: 400 !important;
+  color: var(--phn-text-2) !important; font-weight: 400 !important;
 }
 /* "+N new comments since your last visit" badge on the feed */
 html[data-phn="on"] .phn-newcount {
@@ -123,21 +124,42 @@ html[data-phn="on"] .phn-newcount {
   border: 1px solid var(--phn-new); border-radius: 5px; padding: 0 5px; line-height: 1.5;
 }
 
+/* ---------- 20-per-page pager (Prev / page N / Next) ----------
+   In-flow, centered directly under the list so it's where the eye
+   lands after the last story. */
+/* Fixed-width grid: Prev pinned left, page number centered, More pinned
+   right — so "More" never shifts horizontally no matter what's in the
+   middle or whether Prev is shown. */
+html[data-phn="on"] .phn-pager {
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  width: 260px; max-width: 100%; margin: 0 auto; padding: 16px 0 24px;
+}
+html[data-phn="on"] .phn-pager .phn-prev { justify-self: start; font-size: 13px; color: var(--phn-link) !important; cursor: pointer; }
+html[data-phn="on"] .phn-pager .phn-prev:hover { text-decoration: underline; }
+html[data-phn="on"] .phn-pager .phn-pagenum { justify-self: center; font-size: 12px; color: var(--phn-text-3); font-variant-numeric: tabular-nums; }
+html[data-phn="on"] .phn-pager a.morelink.phn-next { justify-self: end; margin: 0 !important; }
+/* Keep the stories table a constant width so the centered pager (and
+   anything else centered in the column) never shifts horizontally:
+   break long unbreakable tokens instead of letting them widen the
+   table, and always reserve scrollbar space. */
+html[data-phn="on"] { scrollbar-gutter: stable; }
+html[data-phn="on"] .titleline > a,
+html[data-phn="on"] .sitebit,
+html[data-phn="on"] .sitestr,
+html[data-phn="on"] .subline { overflow-wrap: break-word; }
+
 /* ============================================================
    DEPTH-AWARE THREAD RAILS — navigation aid, every style
    (subtle in light; the modern styles brighten them)
    ============================================================ */
+/* A single, quiet rail on every nested comment — depth is already
+   conveyed by indentation, so the rail is just a calm guide (no
+   multi-color cycling). */
 html[data-phn="on"] .default > .comment {
-  border-left: 2px solid var(--phn-border);
+  border-left: 2px solid var(--phn-border-2);
   padding-left: 11px !important; margin-left: 2px;
 }
-html[data-phn="on"] tr.phn-d1 .default > .comment { border-left-color: #e3853f; }
-html[data-phn="on"] tr.phn-d2 .default > .comment { border-left-color: #4a9fe0; }
-html[data-phn="on"] tr.phn-d3 .default > .comment { border-left-color: #4fb589; }
-html[data-phn="on"] tr.phn-d4 .default > .comment { border-left-color: #b292e6; }
-html[data-phn="on"] tr.phn-d5 .default > .comment { border-left-color: #dca34a; }
-html[data-phn="on"] tr.phn-d6 .default > .comment { border-left-color: #9aa0a6; }
-/* OP + new-since-visit win over depth color */
+/* OP + new-since-visit are the only rails that take an accent color */
 html[data-phn="on"] tr.comtr.phn-op .default > .comment {
   border-left-color: var(--phn-op-border) !important;
   background: var(--phn-op-bg); border-radius: 0 8px 8px 0; padding: 6px 11px !important;

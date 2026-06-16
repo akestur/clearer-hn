@@ -28,6 +28,12 @@ Clearer HN makes **one** type of outbound request, and only in one place:
   Only the URL you're submitting is sent, and only to that API. You can turn
   this off with the "Submit hints" toggle in the popup.
 
+- **Loading more list items.** With "20 per page" enabled, clicking "More"
+  fetches the next page directly from Hacker News (`news.ycombinator.com`) — the
+  same request your browser would make if you navigated there — and shows the
+  next 20 items in place. It's the site you're already on; no third party is
+  involved.
+
 The extension does not contact any server operated by the author. It does not
 load remote scripts, fonts, or images.
 

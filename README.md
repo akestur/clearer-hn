@@ -11,6 +11,7 @@ If you've been burned by a radical Hacker News redesign before, this is the oppo
 ## What it does
 
 - **A more legible feed.** Quiet metadata, clearer separators, and a little more spacing between rows. That extra breathing room means you'll see a few fewer stories per screen than default HN — a deliberate trade for easier reading, not a compaction.
+- **20 items per page.** With the roomier rows, list pages are capped at 20 so a page stays about as tall as default HN's. Prev/Next paging updates the URL (`?cp=N`), so Back, Forward, and bookmarks behave like normal pages — and it fetches Hacker News's own pages behind the scenes, so nothing is skipped (HN's native paging jumps in 30s). Toggleable.
 - **Better readability.** Higher-contrast metadata text and comfortable line spacing in the comment view, without sacrificing HN's density on the feed.
 - **A slim, tidy header** in place of HN's pipe-delimited bar, with the same links.
 - **Comment tools (opt-in):** collapse-all / expand-all / jump-to-next-new, an **OP** tag, markers for comments posted since your last visit, subtle depth guides on nested replies, and `j` / `k` / `z` keyboard navigation. The toolbar stays in view while you scroll a thread.

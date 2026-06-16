@@ -3,9 +3,9 @@
   "use strict";
   var DEFAULTS = {
     enabled: true, theme: "auto", style: "clearer",
-    comments: true, inbox: true, submit: true, readState: true
+    comments: true, inbox: true, submit: true, readState: true, paging: true
   };
-  var TOGGLES = ["enabled", "comments", "inbox", "submit", "readState"];
+  var TOGGLES = ["enabled", "comments", "inbox", "submit", "readState", "paging"];
   var settings = Object.assign({}, DEFAULTS);
 
   function load(cb) {
