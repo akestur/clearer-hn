@@ -10,7 +10,8 @@ If you've been burned by a radical Hacker News redesign before, this is the oppo
 
 ## Demo
 
-https://github.com/user-attachments/assets/d7d1fdb5-378e-4fb8-8a77-027233f1da34
+<img width="1280" height="800" alt="store_screenshot_1" src="https://github.com/user-attachments/assets/fbe2a0d8-a695-467e-9571-f10eae501012" />
+<img width="1280" height="800" alt="store_screenshot_2" src="https://github.com/user-attachments/assets/b02a0bc9-e356-4b9f-b6ad-cf50e5cc85ee" />
 
 ## What it does
 
