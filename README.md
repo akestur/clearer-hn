@@ -31,7 +31,7 @@ Every feature can be turned off from the toolbar popup.
 
 ### From the Chrome Web Store
 
-_Link coming soon._ <!-- TODO: add Web Store URL after publishing -->
+https://chromewebstore.google.com/detail/clearer-hn/kmklgjeahockdiefpenkcgdgbbkpjaph?authuser=0&hl=en
 
 ### From source (developer mode)
 
